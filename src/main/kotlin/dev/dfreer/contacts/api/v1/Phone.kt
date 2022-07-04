@@ -1,4 +1,4 @@
-package dev.dfreer.contacts.json
+package dev.dfreer.contacts.api.v1
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
