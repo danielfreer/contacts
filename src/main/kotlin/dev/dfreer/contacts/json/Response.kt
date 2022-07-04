@@ -1,16 +1,14 @@
 package dev.dfreer.contacts.json
 
-import dev.dfreer.contacts.api.v1.Address
-import dev.dfreer.contacts.api.v1.Name
-import dev.dfreer.contacts.api.v1.Phone
+import dev.dfreer.contacts.api.v1.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Response (
-    val id: Int,
-    val name: Name,
-    val address: Address,
-    @SerialName("phone") val phones: List<Phone>,
-    val email: String,
-)
+data class Response(
+    val id: Id,
+    override val name: Name,
+    override val address: Address,
+    @SerialName("phone") override val phones: List<Phone>,
+    override val email: String,
+): Contact
