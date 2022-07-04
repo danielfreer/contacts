@@ -8,6 +8,6 @@ class Parser {
     private val json = Json { prettyPrint = true }
 
     inline fun <reified T> decodeFromString(json: String): T = Json.decodeFromString(json)
-    fun encodeToString(contactEntryRequest: ContactEntryRequest) = json.encodeToString(contactEntryRequest)
-    fun encodeToString(contactEntryResponse: ContactEntryResponse) = json.encodeToString(contactEntryResponse)
+    fun encodeToString(request: Request) = json.encodeToString(request)
+    fun encodeToString(response: Response) = json.encodeToString(response)
 }

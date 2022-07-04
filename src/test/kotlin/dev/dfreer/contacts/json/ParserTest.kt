@@ -1,45 +1,50 @@
 package dev.dfreer.contacts.json
 
+import dev.dfreer.contacts.api.v1.Address
+import dev.dfreer.contacts.api.v1.Name
+import dev.dfreer.contacts.api.v1.Phone
+import dev.dfreer.contacts.api.v1.Phone.Type.HOME
+import dev.dfreer.contacts.api.v1.Phone.Type.MOBILE
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ParserTest {
     @Test
-    fun `should decode contact entry request json`() = assertEquals(
-        expected = contactEntryRequest,
-        actual = Parser().decodeFromString(contactEntryRequestJson),
+    fun `should decode request json`() = assertEquals(
+        expected = request,
+        actual = Parser().decodeFromString(requestJson),
     )
 
     @Test
-    fun `should encode contact entry request`() = assertEquals(
-        expected = contactEntryRequestJson,
-        actual = Parser().encodeToString(contactEntryRequest),
+    fun `should encode request`() = assertEquals(
+        expected = requestJson,
+        actual = Parser().encodeToString(request),
     )
 
     @Test
-    fun `should decode contact entry response json`() = assertEquals(
-        expected = contactEntryResponse,
-        actual = Parser().decodeFromString(contactEntryResponseJson),
+    fun `should decode response json`() = assertEquals(
+        expected = response,
+        actual = Parser().decodeFromString(responseJson),
     )
 
     @Test
-    fun `should encode contact entry response`() = assertEquals(
-        expected = contactEntryResponseJson,
-        actual = Parser().encodeToString(contactEntryResponse),
+    fun `should encode response`() = assertEquals(
+        expected = responseJson,
+        actual = Parser().encodeToString(response),
     )
 }
 
-private val contactEntryRequest = ContactEntryRequest(
+private val request = Request(
     Name(first = "Harold", middle = "Francis", last = "Gilkey"),
     Address(street = "8360 High Autumn Row", city = "Cannon", state = "Delaware", zip = "19797"),
     phones = listOf(
-        Phone(number = "302-611-9148", type = Phone.Type.HOME),
-        Phone(number = "302-532-9427", type = Phone.Type.MOBILE),
+        Phone(number = "302-611-9148", type = HOME),
+        Phone(number = "302-532-9427", type = MOBILE),
     ),
     email = "harold.gilkey@yahoo.com",
 )
 
-private val contactEntryRequestJson = """
+private val requestJson = """
 {
     "name": {
         "first": "Harold",
@@ -66,18 +71,18 @@ private val contactEntryRequestJson = """
 }
 """.trimIndent()
 
-private val contactEntryResponse = ContactEntryResponse(
+private val response = Response(
     id = 101,
     Name(first = "Harold", middle = "Francis", last = "Gilkey"),
     Address(street = "8360 High Autumn Row", city = "Cannon", state = "Delaware", zip = "19797"),
     phones = listOf(
-        Phone(number = "302-611-9148", type = Phone.Type.HOME),
-        Phone(number = "302-532-9427", type = Phone.Type.MOBILE),
+        Phone(number = "302-611-9148", type = HOME),
+        Phone(number = "302-532-9427", type = MOBILE),
     ),
     email = "harold.gilkey@yahoo.com",
 )
 
-private val contactEntryResponseJson = """
+private val responseJson = """
 {
     "id": 101,
     "name": {
