@@ -11,7 +11,7 @@ data class Phone(
     @Serializable
     enum class Type {
         @SerialName("home") HOME,
-        @SerialName("work") WORK,
         @SerialName("mobile") MOBILE,
+        @SerialName("work") WORK,
     }
 }

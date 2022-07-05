@@ -1,14 +1,11 @@
 package dev.dfreer.contacts.database
 
-import dev.dfreer.contacts.api.v1.Address
-import dev.dfreer.contacts.api.v1.Contact
-import dev.dfreer.contacts.api.v1.Name
-import dev.dfreer.contacts.api.v1.Phone
+import dev.dfreer.contacts.api.v1.*
 import kotlin.test.*
 
 class DatabaseTest {
-    private val contact = TestContact("daniel")
-    private val updatedContact = TestContact("jared")
+    private val contact = testContact("daniel")
+    private val updatedContact = testContact("jared")
     private lateinit var database: Database
 
     @BeforeTest
@@ -23,8 +20,18 @@ class DatabaseTest {
     fun `given a contact has been created, when reading the id, should return the contact`() {
         val id = database.create(contact)
         assertEquals(
-            expected = contact,
+            expected = contact.withId(0),
             actual = database.read(id),
+        )
+    }
+
+    @Test
+    fun `given contacts have been created, when reading, should return contacts`() {
+        database.create(contact)
+        database.create(updatedContact)
+        assertContentEquals(
+            expected = listOf(contact.withId(0), updatedContact.withId(1)),
+            actual = database.read(),
         )
     }
 
@@ -39,7 +46,7 @@ class DatabaseTest {
         val id = database.create(contact)
         database.update(id, updatedContact)
         assertEquals(
-            expected = updatedContact,
+            expected = updatedContact.withId(0),
             actual = database.read(id),
         )
     }
@@ -63,6 +70,14 @@ class DatabaseTest {
     }
 
     @Test
+    fun `when reading an empty database, should return an empty list`() {
+        assertContentEquals(
+            expected = emptyList(),
+            actual = database.read(),
+        )
+    }
+
+    @Test
     fun `when updating an unknown id, should return false`() {
         assertFalse(database.update(1, updatedContact))
     }
@@ -73,11 +88,9 @@ class DatabaseTest {
     }
 }
 
-private data class TestContact(
-    private val firstName: String
-) : Contact {
-    override val name = Name(firstName, middle = "", last = "")
-    override val address = Address(street = "", city = "", state = "", zip = "")
-    override val phones = emptyList<Phone>()
-    override val email = ""
-}
+private fun testContact(firstName: String) = Contact(
+    Name(firstName, middle = "", last = ""),
+    Address(street = "", city = "", state = "", zip = ""),
+    phones = emptyList<Phone>(),
+    email = "",
+)
