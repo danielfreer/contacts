@@ -1,40 +1,44 @@
 package dev.dfreer.contacts.json
 
-import dev.dfreer.contacts.api.v1.Address
-import dev.dfreer.contacts.api.v1.Name
-import dev.dfreer.contacts.api.v1.Phone
+import dev.dfreer.contacts.api.v1.*
 import dev.dfreer.contacts.api.v1.Phone.Type.HOME
 import dev.dfreer.contacts.api.v1.Phone.Type.MOBILE
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFails
 
 class ParserTest {
     @Test
-    fun `should decode request json`() = assertEquals(
-        expected = request,
-        actual = Parser().decodeFromString(requestJson),
+    fun `should decode contact json`() = assertEquals(
+        expected = contact,
+        actual = Parser().decodeFromString(contactJson),
     )
 
     @Test
-    fun `should encode request`() = assertEquals(
-        expected = requestJson,
-        actual = Parser().encodeToString(request),
+    fun `should encode contact`() = assertEquals(
+        expected = contactJson,
+        actual = Parser().encodeToString(contact),
     )
 
     @Test
-    fun `should decode response json`() = assertEquals(
-        expected = response,
-        actual = Parser().decodeFromString(responseJson),
+    fun `should decode contact with id json`() = assertEquals(
+        expected = contactWithId,
+        actual = Parser().decodeFromString(contactWithIdJson),
     )
 
     @Test
-    fun `should encode response`() = assertEquals(
-        expected = responseJson,
-        actual = Parser().encodeToString(response),
+    fun `should encode contact with id`() = assertEquals(
+        expected = contactWithIdJson,
+        actual = Parser().encodeToString(contactWithId),
     )
+
+    @Test
+    fun `when json is malformed, should throw an exception`() {
+        assertFails { Parser().decodeFromString<Any>("{]") }
+    }
 }
 
-private val request = Request(
+private val contact = Contact(
     Name(first = "Harold", middle = "Francis", last = "Gilkey"),
     Address(street = "8360 High Autumn Row", city = "Cannon", state = "Delaware", zip = "19797"),
     phones = listOf(
@@ -44,7 +48,7 @@ private val request = Request(
     email = "harold.gilkey@yahoo.com",
 )
 
-private val requestJson = """
+private val contactJson = """
 {
     "name": {
         "first": "Harold",
@@ -71,7 +75,7 @@ private val requestJson = """
 }
 """.trimIndent()
 
-private val response = Response(
+private val contactWithId = ContactWithId(
     id = 101,
     Name(first = "Harold", middle = "Francis", last = "Gilkey"),
     Address(street = "8360 High Autumn Row", city = "Cannon", state = "Delaware", zip = "19797"),
@@ -82,7 +86,7 @@ private val response = Response(
     email = "harold.gilkey@yahoo.com",
 )
 
-private val responseJson = """
+private val contactWithIdJson = """
 {
     "id": 101,
     "name": {

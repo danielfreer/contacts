@@ -1,6 +1,7 @@
 package dev.dfreer.contacts.database
 
 import dev.dfreer.contacts.api.v1.Contact
+import dev.dfreer.contacts.api.v1.ContactWithId
 import dev.dfreer.contacts.api.v1.Id
 
 class Database(private val idGenerator: IdGenerator) {
@@ -12,7 +13,13 @@ class Database(private val idGenerator: IdGenerator) {
         return id
     }
 
-    fun read(id: Id): Contact? = contactsById[id]
+    fun read(): List<ContactWithId> = contactsById.map { (id, contact) ->
+        with(contact) { ContactWithId(id, name, address, phones, email) }
+    }
+
+    fun read(id: Id): ContactWithId? = contactsById[id]?.let { contact ->
+        with(contact) { ContactWithId(id, name, address, phones, email) }
+    }
 
     fun update(id: Id, contact: Contact): Boolean {
         if (contactsById.remove(id) == null) return false
