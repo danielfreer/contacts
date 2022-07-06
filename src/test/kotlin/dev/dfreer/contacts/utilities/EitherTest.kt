@@ -6,15 +6,15 @@ import kotlin.test.assertIs
 class EitherTest {
     @Test
     fun `given a successful try, should return a right`() {
-        assertIs<Right<Problem, Something>>(
+        assertIs<Right<Exception, Something>>(
             Success(Something).toEither()
         )
     }
 
     @Test
     fun `given a failed try, should return a left`() {
-        assertIs<Left<Problem, Something>>(
-            Failure<Something>(Problem(null, null)).toEither()
+        assertIs<Left<Exception, Something>>(
+            Failure<Something>(IllegalArgumentException("")).toEither()
         )
     }
 }
